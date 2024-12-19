@@ -1,19 +1,40 @@
 import React from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './src/screens/HomeScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 import ScannerScreen from './src/screens/ScannerScreen';
+import WebViewScreen from './src/screens/WebViewScreen';
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+const RootStack = createStackNavigator();
+
+function TabNavigator() {
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <ScannerScreen />
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name="首页" component={HomeScreen} />
+      <Tab.Screen name="我的" component={ProfileScreen} />
+    </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-});
+export default function App() {
+  return (
+    <NavigationContainer>
+      <RootStack.Navigator>
+        <RootStack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
+        <RootStack.Screen 
+          name="ScannerScreen" 
+          component={ScannerScreen} 
+          options={{ title: '扫描器' }}
+        />
+        <RootStack.Screen 
+          name="WebViewScreen" 
+          component={WebViewScreen} 
+          options={{ headerShown: true }}
+        />
+      </RootStack.Navigator>
+    </NavigationContainer>
+  );
+}
